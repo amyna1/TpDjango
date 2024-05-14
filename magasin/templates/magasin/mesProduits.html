@@ -1,0 +1,95 @@
+{% extends 'magasin/bases.html' %}
+
+{% block title %} Catalogue de produits {% endblock %}
+
+{% block styles %}
+<style>
+    /* Style pour la disposition en grille */
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+    }
+
+    .product-card {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
+
+    .product-card:hover {
+        transform: translateY(-5px); /* Effet de levée au survol */
+    }
+
+    .product-img {
+        width: 100%;
+        height: auto;
+        border-radius: 5px;
+        transition: transform 0.3s ease;
+    }
+
+    .product-img:hover {
+        transform: scale(1.05); /* Effet d'agrandissement au survol */
+    }
+
+    .product-details {
+        padding: 10px;
+    }
+
+    .product-details h4 {
+        margin-bottom: 5px;
+    }
+
+    .product-details p {
+        margin: 0;
+    }
+
+    /* Style pour l'icône de panier */
+    #cart-icon {
+        font-size: 24px;
+        margin-right: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Panier -->
+<div id="cart" class="container mt-3">
+    <h3><i class="fas fa-shopping-cart" id="cart-icon"></i> Panier</h3>
+    <p>Nombre d'articles dans le panier : <span id="cartCount">0</span></p>
+</div>
+
+<!-- Contenu de votre page -->
+<div class="container mt-3">
+    <!-- Curseur pour naviguer entre les produits -->
+    <div class="product-grid">
+        {% for product in products %}
+        <div class="product-card">
+            {% if product.img %}
+            <img src="{{ product.img.url }}" alt="{{ product.libelle }}" class="product-img">
+            {% else %}
+            <p>Aucune image disponible</p>
+            {% endif %}
+            <div class="product-details">
+                <h4>{{ product.libelle }}</h4>
+                <p>{{ product.description }}</p>
+                <p>{{ product.prix }}</p>
+                <button class="btn btn-primary" onclick="addToCart('{{ product.id }}')">Acheter</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    let cartCount = 0; // Initialisation du compteur du panier
+
+    function addToCart(productId) {
+        // Ajoutez la logique pour ajouter le produit au panier ici
+        cartCount++; // Incrémentation du compteur du panier
+        document.getElementById('cartCount').textContent = cartCount; // Mise à jour de l'affichage du nombre d'articles dans le panier
+        alert("Produit ajouté au panier avec succès !");
+    }
+</script>
+{% endblock %}

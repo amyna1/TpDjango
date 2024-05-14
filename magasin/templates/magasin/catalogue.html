@@ -1,0 +1,65 @@
+<!-- magasin/templates/magasin/catalogue.html -->
+{% extends 'magasin/bases.html' %}
+
+{% block title %}Catalogue{% endblock %}
+
+{% block styles %}
+<style>
+    .card {
+        transition: transform 0.3s ease; /* Animation au survol */
+    }
+
+    .card:hover {
+        transform: translateY(-5px); /* Effet de levée au survol */
+    }
+
+    .card-details {
+        font-weight: normal; /* Texte normal par défaut */
+    }
+
+    .details-bold {
+        font-weight: bold; /* Texte en gras lorsque détails affichés */
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center mb-4">Catalogue</h1>
+    <div class="row">
+        {% for produit in produits %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="{{ produit.image.url }}" class="card-img-top" alt="{{ produit.nom }}"> <!-- Image du produit -->
+                <div class="card-body">
+                    <h5 class="card-title">{{ produit.nom }}</h5>
+                    <p class="card-text">{{ produit.description }}</p>
+                    <p class="card-text">Prix: {{ produit.prix }}</p>
+                    <a href="#" class="btn btn-primary details-btn">Détails</a>
+                    <div class="card-details mt-2" style="display: none;">
+                        <p class="details-bold">Détails du produit :</p>
+                        <p class="details-bold">Nom: {{ produit.nom }}</p>
+                        <p class="details-bold">Description: {{ produit.description }}</p>
+                        <p class="details-bold">Prix: {{ produit.prix }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const detailsButtons = document.querySelectorAll('.details-btn');
+        detailsButtons.forEach(btn => {
+            btn.addEventListener('click', function (event) {
+                event.preventDefault();
+                const cardDetails = this.nextElementSibling;
+                cardDetails.classList.toggle('details-bold'); // Appliquer ou supprimer le style en gras
+                cardDetails.style.display = cardDetails.style.display === 'none' ? 'block' : 'none'; // Afficher ou cacher les détails
+            });
+        });
+    });
+</script>
+{% endblock %}
